@@ -1,0 +1,2 @@
+ROI 1: x=156, y=92, width=110, height=14
+ROI 2: x=102, y=107, width=85, height=15

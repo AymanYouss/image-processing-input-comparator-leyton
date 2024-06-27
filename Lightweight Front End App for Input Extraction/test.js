@@ -1,0 +1,2 @@
+text = 
+JSON.parse(text)

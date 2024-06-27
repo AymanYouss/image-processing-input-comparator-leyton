@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Certificate Information Extraction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        input[type="file"], select {
+            margin: 10px 0;
+        }
+        button {
+            display: block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .field-container {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+        }
+        .field {
+            margin-bottom: 10px;
+        }
+        .field span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Certificate Information Extraction</h1>
+    <label for="modelSelect">Select Model:</label>
+    <select id="modelSelect">
+        <option value="gemini-1.5-flash-latest">Gemini 1.5 Flash</option>
+        <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro</option>
+    </select>
+    <input type="file" id="certificateInput" accept="image/*">
+    <button id="processButton">Process Certificate</button>
+    <pre id="output"></pre>
+    <div id="parsedOutput" class="field-container"></div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        // Fetch your API_KEY
+        const API_KEY = 'AIzaSyBTueP6v9AXeQHfJb5gE6J3EhkarHnWxYc';  // Replace with your API key
+
+        // Access your API key
+        const genAI = new GoogleGenerativeAI(API_KEY);
+
+        // Converts a File object to a GoogleGenerativeAI.Part object.
+        async function fileToGenerativePart(file) {
+          const base64EncodedDataPromise = new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result.split(',')[1]);
+            reader.readAsDataURL(file);
+          });
+          return {
+            inlineData: { data: await base64EncodedDataPromise, mimeType: file.type },
+          };
+        }
+
+        document.getElementById('processButton').addEventListener('click', async () => {
+            const fileInput = document.getElementById('certificateInput');
+            if (fileInput.files.length === 0) {
+                alert('Please select a certificate image.');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const selectedModel = document.getElementById('modelSelect').value;
+
+            // Use the selected model
+            const model = genAI.getGenerativeModel({ model: selectedModel });
+
+            // const prompt = "Extract all the fields and information even if they are empty from this certificate image in French in a JSON format. Ignore the location data.";
+
+            const prompt = "Extract the following fields in a json format from the certificate even if the fields are empty : Numéro d'immatriculation,Nom et Prénom de lassuré , Adresse , Code Postal , Ville , Numéro de téléphone , Nom, Prénom ou Dénomination sociale , Numéro de téléphone de lemployeur , Adresse de lemployeur , Email de lemployeur , Arrêt de travail (date en lettres) , Arrêt de travail (date en chiffres) , Rapport état pathologique , Rapport accident de travail , Sorties autorisées , Sorties sans restriction , Nom du praticien , Identifiant du praticien , Localisation , Date de lexamen.";
+
+            const imagePart = await fileToGenerativePart(file);
+
+            const result = await model.generateContent([prompt, imagePart]);
+            const response = await result.response;
+            let text = await response.text();
+
+            // Remove any non-JSON content
+            text = text.replace(/```json|```/g, '').trim();
+            
+            document.getElementById('output').textContent = text;
+
+            try {
+                const parsedData = JSON.parse(text);
+                displayParsedData(parsedData);
+            } catch (error) {
+                console.error("Failed to parse JSON:", error);
+                alert("Failed to parse JSON response. Please check the console for details.");
+            }
+        });
+
+        function displayParsedData(data) {
+            const parsedOutput = document.getElementById('parsedOutput');
+            parsedOutput.innerHTML = '';  // Clear previous content
+
+            for (const [field, value] of Object.entries(data)) {
+                const fieldDiv = document.createElement('div');
+                fieldDiv.className = 'field';
+                fieldDiv.innerHTML = `<span>${field}:</span> ${value !== null ? value : 'N/A'}`;
+                parsedOutput.appendChild(fieldDiv);
+            }
+        }
+    </script>
+</body>
+</html>

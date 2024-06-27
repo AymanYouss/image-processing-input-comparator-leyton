@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Verification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Document Verification</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="numero_immatriculation">Numéro d'immatriculation:</label>
+                <input type="text" id="numero_immatriculation" name="numero_immatriculation">
+            </div>
+            <div class="form-group">
+                <label for="nom_prenom_assure">Nom et Prénom de l'assuré:</label>
+                <input type="text" id="nom_prenom_assure" name="nom_prenom_assure">
+            </div>
+            <div class="form-group">
+                <label for="adresse">Adresse:</label>
+                <input type="text" id="adresse" name="adresse">
+            </div>
+            <div class="form-group">
+                <label for="code_postal">Code Postal:</label>
+                <input type="text" id="code_postal" name="code_postal">
+            </div>
+            <div class="form-group">
+                <label for="ville">Ville:</label>
+                <input type="text" id="ville" name="ville">
+            </div>
+            <div class="form-group">
+                <label for="n_telephone">Numéro de téléphone:</label>
+                <input type="text" id="n_telephone" name="n_telephone">
+            </div>
+            <div class="form-group">
+                <label for="nom_prenom_denomination_sociale">Nom, Prénom ou Dénomination sociale:</label>
+                <input type="text" id="nom_prenom_denomination_sociale" name="nom_prenom_denomination_sociale">
+            </div>
+            <div class="form-group">
+                <label for="n_telephone_employeur">Numéro de téléphone de l'employeur:</label>
+                <input type="text" id="n_telephone_employeur" name="n_telephone_employeur">
+            </div>
+            <div class="form-group">
+                <label for="adresse_employeur">Adresse de l'employeur:</label>
+                <input type="text" id="adresse_employeur" name="adresse_employeur">
+            </div>
+            <div class="form-group">
+                <label for="email_employeur">Email de l'employeur:</label>
+                <input type="text" id="email_employeur" name="email_employeur">
+            </div>
+            <div class="form-group">
+                <label for="arret_travail_lettres">Arrêt de travail (date en lettres):</label>
+                <input type="text" id="arret_travail_lettres" name="arret_travail_lettres">
+            </div>
+            <div class="form-group">
+                <label for="arret_travail_chiffres">Arrêt de travail (date en chiffres):</label>
+                <input type="text" id="arret_travail_chiffres" name="arret_travail_chiffres">
+            </div>
+            <div class="form-group">
+                <label>Rapport état pathologique:</label>
+                <div class="radio-group">
+                    <input type="radio" id="rapport_etat_pathologique_true" name="rapport_etat_pathologique" value="True">
+                    <label for="rapport_etat_pathologique_true">True</label>
+                    <input type="radio" id="rapport_etat_pathologique_false" name="rapport_etat_pathologique" value="False">
+                    <label for="rapport_etat_pathologique_false">False</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Rapport accident de travail:</label>
+                <div class="radio-group">
+                    <input type="radio" id="rapport_accident_travail_true" name="rapport_accident_travail" value="True">
+                    <label for="rapport_accident_travail_true">True</label>
+                    <input type="radio" id="rapport_accident_travail_false" name="rapport_accident_travail" value="False">
+                    <label for="rapport_accident_travail_false">False</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Sorties autorisées:</label>
+                <div class="radio-group">
+                    <input type="radio" id="sorties_autorisees_true" name="sorties_autorisees" value="True">
+                    <label for="sorties_autorisees_true">True</label>
+                    <input type="radio" id="sorties_autorisees_false" name="sorties_autorisees" value="False">
+                    <label for="sorties_autorisees_false">False</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Sorties sans restriction:</label>
+                <div class="radio-group">
+                    <input type="radio" id="sorties_sans_restriction_true" name="sorties_sans_restriction" value="True">
+                    <label for="sorties_sans_restriction_true">True</label>
+                    <input type="radio" id="sorties_sans_restriction_false" name="sorties_sans_restriction" value="False">
+                    <label for="sorties_sans_restriction_false">False</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="nom_praticien">Nom du praticien:</label>
+                <input type="text" id="nom_praticien" name="nom_praticien">
+            </div>
+            <div class="form-group">
+                <label for="identifiant_praticien">Identifiant du praticien:</label>
+                <input type="text" id="identifiant_praticien" name="identifiant_praticien">
+            </div>
+            <div class="form-group">
+                <label for="localisation">Localisation:</label>
+                <input type="text" id="localisation" name="localisation">
+            </div>
+            <div class="form-group">
+                <label for="date_examen">Date de l'examen:</label>
+                <input type="text" id="date_examen" name="date_examen">
+            </div>
+            <div class="form-group">
+                <label for="image">Upload Image:</label>
+                <input type="file" id="image" name="file">
+            </div>
+            <button type="submit">Verify</button>
+        </form>
+    </div>
+</body>
+</html>
