@@ -68,7 +68,7 @@
         import { GoogleGenerativeAI } from "@google/generative-ai";
 
         // Fetch your API_KEY
-        const API_KEY = 'AIzaSyBTueP6v9AXeQHfJb5gE6J3EhkarHnWxYc';  // Replace with your API key
+        const API_KEY = 'AIzaSyBTueP6v9AXeQHfJb5gE6J3EhkarHnWxYc';  
 
         // Access your API key
         const genAI = new GoogleGenerativeAI(API_KEY);
@@ -76,7 +76,7 @@
         // Converts a File object to a GoogleGenerativeAI.Part object.
         async function fileToGenerativePart(file) {
           const base64EncodedDataPromise = new Promise((resolve) => {
-            const reader = new FileReader();
+            const reader = new FileReader();    
             reader.onloadend = () => resolve(reader.result.split(',')[1]);
             reader.readAsDataURL(file);
           });
@@ -100,7 +100,7 @@
 
             // const prompt = "Extract all the fields and information even if they are empty from this certificate image in French in a JSON format. Ignore the location data.";
 
-            const prompt = "Extract the following fields in a json format from the certificate even if the fields are empty : Numéro d'immatriculation,Nom et Prénom de lassuré , Adresse , Code Postal , Ville , Numéro de téléphone , Nom, Prénom ou Dénomination sociale , Numéro de téléphone de lemployeur , Adresse de lemployeur , Email de lemployeur , Arrêt de travail (date en lettres) , Arrêt de travail (date en chiffres) , Rapport état pathologique , Rapport accident de travail , Sorties autorisées , Sorties sans restriction , Nom du praticien , Identifiant du praticien , Localisation , Date de lexamen.";
+            const prompt = "Extract the following fields in a json format from the certificate even if the fields are empty : Numéro d'immatriculation,Nom et Prénom de lassuré , Adresse , Code Postal , Ville , Numéro de téléphone , Nom, Prénom ou Dénomination sociale , Numéro de téléphone de lemployeur , Adresse de lemployeur , Email de lemployeur , Arrêt de travail (date en lettres) , Arrêt de travail (date en chiffres), Nom du praticien , Identifiant du praticien , Localisation , Date de lexamen. Also for the following checkbox fields give which one is checked (if not checked write N/A, else write true or false) : Rapport état pathologique , Rapport accident de travail , Sorties autorisées , Sorties sans restriction ";
 
             const imagePart = await fileToGenerativePart(file);
 
@@ -111,9 +111,10 @@
             // Remove any non-JSON content
             text = text.replace(/```json|```/g, '').trim();
             
+            // document.getElementById('output').textContent = text;
             document.getElementById('output').textContent = text;
-
-            try {
+            
+            try     {
                 const parsedData = JSON.parse(text);
                 displayParsedData(parsedData);
             } catch (error) {
@@ -134,5 +135,6 @@
             }
         }
     </script>
+    
 </body>
 </html>
